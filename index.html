@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Birthday Event Management System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(to right,#ff758c,#ff7eb3);
+}
+
+header{
+background:#d81b60;
+color:white;
+text-align:center;
+padding:15px;
+}
+
+nav{
+background:#c2185b;
+text-align:center;
+padding:10px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+nav a:hover{
+color:yellow;
+}
+
+.section{
+display:none;
+padding:40px 20px;
+}
+
+.active{
+display:block;
+}
+
+.container{
+max-width:400px;
+background:white;
+margin:auto;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.3);
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin:10px 0;
+}
+
+button{
+width:100%;
+padding:10px;
+background:#ff4081;
+border:none;
+color:white;
+font-size:16px;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#ad1457;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+img{
+width:100%;
+border-radius:10px;
+margin-top:10px;
+}
+
+.hidden{
+display:none;
+}
+
+footer{
+background:#d81b60;
+color:white;
+text-align:center;
+padding:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>🎉 Birthday Event Management System 🎂</h2>
+</header>
+
+<nav>
+<a onclick="showSection('home')">Home</a>
+<a onclick="showSection('auth')">Register & Login</a>
+
+<a onclick="checkLogin('booking')">Booking</a>
+<a onclick="checkLogin('food')">Food</a>
+<a onclick="checkLogin('cake')">Cake</a>
+<a onclick="checkLogin('decoration')">Decoration</a>
+<a onclick="checkLogin('bill')">Final Bill</a>
+<a onclick="checkLogin('dashboard')">Dashboard</a>
+</nav>
+
+<!-- HOME -->
+
+<section id="home" class="section active">
+<div class="card">
+<h2>Make Your Birthday Memorable 🎉</h2>
+<p>Book Cake, Food & Decorations Easily</p>
+</div>
+</section>
+
+<!-- LOGIN REGISTER -->
+
+<section id="auth" class="section">
+
+<div class="container">
+
+<div id="loginForm">
+
+<h3>User Login</h3>
+
+<input type="text" id="loginUser" placeholder="Username">
+<input type="password" id="loginPass" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<p id="loginMsg"></p>
+
+<p>Don't have account? <a onclick="showSignup()">Register</a></p>
+
+</div>
+
+<div id="registerForm" class="hidden">
+
+<h3>User Registration</h3>
+
+<input type="text" id="regUser" placeholder="Username">
+<input type="password" id="regPass" placeholder="Password">
+
+<button onclick="register()">Register</button>
+
+<p id="regMsg"></p>
+
+<p>Already have account? <a onclick="showLogin()">Login</a></p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- BOOKING -->
+
+<section id="booking" class="section">
+
+<div class="container">
+
+<h3>Book Your Event</h3>
+
+<input type="text" id="custName" placeholder="Your Name">
+
+<input type="date" id="date">
+
+<select>
+<option>Princess Theme</option>
+<option>Superhero Theme</option>
+<option>Cartoon Theme</option>
+</select>
+
+<button onclick="bookEvent()">Confirm Booking</button>
+
+<p id="bookMsg"></p>
+
+</div>
+
+</section>
+
+<!-- FOOD -->
+
+<section id="food" class="section">
+
+<div class="container">
+
+<h3>Food & Drinks</h3>
+
+<input type="number" id="guests" placeholder="Number of Guests">
+
+<select id="foodPackage">
+<option value="300">Basic Veg ₹300</option>
+<option value="500">Premium Veg ₹500</option>
+<option value="700">Non Veg ₹700</option>
+</select>
+
+<select id="drinks">
+<option value="50">Soft Drinks ₹50</option>
+<option value="100">Mocktails ₹100</option>
+</select>
+
+<button onclick="calculateFood()">Calculate</button>
+
+<h4 id="foodTotal"></h4>
+
+</div>
+
+</section>
+
+<!-- CAKE -->
+
+<section id="cake" class="section">
+
+<div class="container">
+
+<h3>Select Cake</h3>
+
+<select id="cakeType" onchange="showCake()">
+
+<option value="1000">Chocolate Cake ₹1000</option>
+<option value="1200">Strawberry Cake ₹1200</option>
+<option value="1500">Designer Cake ₹1500</option>
+
+</select>
+
+<img id="cakeImg">
+
+<button onclick="selectCake()">Confirm Cake</button>
+
+<p id="cakeMsg"></p>
+
+</div>
+
+</section>
+
+<!-- DECORATION -->
+
+<section id="decoration" class="section">
+
+<div class="container">
+
+<h3>Decoration</h3>
+
+<select id="decorationPackage">
+
+<option value="5000">Basic ₹5000</option>
+<option value="10000">Premium ₹10000</option>
+<option value="15000">Luxury ₹15000</option>
+
+</select>
+
+<button onclick="selectDecoration()">Confirm Decoration</button>
+
+<p id="decMsg"></p>
+
+</div>
+
+</section>
+
+<!-- BILL -->
+
+<section id="bill" class="section">
+
+<div class="container">
+
+<h3>Final Bill</h3>
+
+<p>Food Total: ₹<span id="bFood">0</span></p>
+<p>Cake Cost: ₹<span id="bCake">0</span></p>
+<p>Decoration Cost: ₹<span id="bDec">0</span></p>
+
+<hr>
+
+<h2>Grand Total: ₹<span id="grandTotal">0</span></h2>
+
+<button onclick="generateBill()">Generate Bill</button>
+
+</div>
+
+</section>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="section">
+
+<div class="card">
+
+<h3>Dashboard</h3>
+
+<p>Total Bookings: <span id="totalBookings">0</span></p>
+
+<canvas id="chart"></canvas>
+
+</div>
+
+</section>
+
+<footer>
+© 2026 Birthday Event Management System
+</footer>
+
+<script>
+
+let isLoggedIn=false
+
+let foodTotal=0
+let cakeCost=0
+let decCost=0
+let bookings=0
+
+function showSection(id){
+
+document.querySelectorAll(".section").forEach(sec=>sec.classList.remove("active"))
+
+document.getElementById(id).classList.add("active")
+
+}
+
+function checkLogin(section){
+
+if(!isLoggedIn){
+
+alert("Please Login First ❌")
+
+showSection("auth")
+
+return
+
+}
+
+showSection(section)
+
+}
+
+function showSignup(){
+
+document.getElementById("loginForm").classList.add("hidden")
+
+document.getElementById("registerForm").classList.remove("hidden")
+
+}
+
+function showLogin(){
+
+document.getElementById("registerForm").classList.add("hidden")
+
+document.getElementById("loginForm").classList.remove("hidden")
+
+}
+
+function register(){
+
+localStorage.setItem("user",regUser.value)
+localStorage.setItem("pass",regPass.value)
+
+regMsg.innerHTML="Registration Successful ✅"
+
+}
+
+function login(){
+
+let u=localStorage.getItem("user")
+let p=localStorage.getItem("pass")
+
+if(loginUser.value==u && loginPass.value==p){
+
+loginMsg.innerHTML="Login Successful ✅"
+
+isLoggedIn=true
+
+showSection("booking")
+
+}else{
+
+loginMsg.innerHTML="Invalid Login ❌"
+
+}
+
+}
+
+function bookEvent(){
+
+bookings++
+
+totalBookings.innerHTML=bookings
+
+bookMsg.innerHTML="Booking Confirmed 🎉"
+
+updateChart()
+
+}
+
+function calculateFood(){
+
+let g=guests.value
+let f=foodPackage.value
+let d=drinks.value
+
+foodTotal=g*(parseInt(f)+parseInt(d))
+
+foodTotalText="Total ₹"+foodTotal
+
+document.getElementById("foodTotal").innerHTML=foodTotalText
+
+}
+
+function showCake(){
+
+let img=document.getElementById("cakeImg")
+
+let val=cakeType.selectedIndex
+
+if(val==0) img.src="https://images.unsplash.com/photo-1578985545062-69928b1d9587"
+if(val==1) img.src="https://images.unsplash.com/photo-1535141192574-5d4897c12636"
+if(val==2) img.src="https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec"
+
+}
+
+function selectCake(){
+
+cakeCost=cakeType.value
+
+cakeMsg.innerHTML="Cake Selected ₹"+cakeCost
+
+}
+
+function selectDecoration(){
+
+decCost=decorationPackage.value
+
+decMsg.innerHTML="Decoration Selected ₹"+decCost
+
+}
+
+function generateBill(){
+
+bFood.innerHTML=foodTotal
+bCake.innerHTML=cakeCost
+bDec.innerHTML=decCost
+
+let total=parseInt(foodTotal)+parseInt(cakeCost)+parseInt(decCost)
+
+grandTotal.innerHTML=total
+
+}
+
+let chart=new Chart(document.getElementById("chart"),{
+
+type:'bar',
+
+data:{
+labels:['Bookings'],
+datasets:[{
+label:'Total Bookings',
+data:[0]
+}]
+}
+
+})
+
+function updateChart(){
+
+chart.data.datasets[0].data=[bookings]
+
+chart.update()
+
+}
+
+showCake()
+
+</script>
+
+</body>
+</html>
